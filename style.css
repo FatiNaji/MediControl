@@ -1,0 +1,994 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --teal: #18a9bd;
+  --teal-dark: #08758e;
+  --blue-dark: #123b59;
+  --border: #cbd9df;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at 5% 20%, #bcecf2 0 10%, transparent 11%),
+    radial-gradient(circle at 95% 85%, #8edbe5 0 15%, transparent 16%),
+    linear-gradient(135deg, #effcff, #bdebf0);
+}
+
+.app {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-card {
+  width: min(100%, 440px);
+  background: #fff;
+  border-radius: 34px;
+  padding: 22px 24px 25px;
+  box-shadow: 0 20px 60px rgba(8, 117, 142, .20);
+  overflow: hidden;
+}
+
+.brand {
+  text-align: center;
+}
+
+.logo-img {
+  width: 150px;
+  height: 105px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: 0 auto -8px;
+}
+
+.brand p {
+  color: #123b59;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.illustration {
+  width: 100%;
+  height: 245px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #e9f9fc;
+}
+
+.illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.input {
+  height: 58px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 0 15px;
+  margin-top: 12px;
+  background: #fff;
+}
+
+.input span {
+  font-size: 22px;
+}
+
+.input input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  color: var(--blue-dark);
+}
+
+.input input::placeholder {
+  color: #8799a4;
+}
+
+.input button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.login-btn {
+  width: 100%;
+  height: 61px;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 31px;
+  background: linear-gradient(90deg, #087d98, #23b4c4);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 9px 20px rgba(8, 125, 152, .20);
+}
+
+.login-btn b {
+  font-size: 26px;
+  margin-left: 10px;
+}
+
+.forgot {
+  display: block;
+  margin: 13px auto;
+  border: 0;
+  background: transparent;
+  color: var(--teal-dark);
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #7c909b;
+  margin: 8px 0 13px;
+}
+
+.separator span {
+  flex: 1;
+  height: 1px;
+  background: #cbd9df;
+}
+
+.register-btn {
+  width: 92%;
+  height: 48px;
+  border: 2px solid var(--teal-dark);
+  border-radius: 20px;
+  background: #f8feff;
+  color: var(--teal-dark);
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#message {
+  min-height: 20px;
+  text-align: center;
+  margin-top: 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+  }
+
+  .login-card {
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 18px 17px 22px;
+  }
+
+  .logo-img {
+    width: 135px;
+    height: 90px;
+  }
+
+  .illustration {
+    height: 230px;
+  }
+}
+
+
+/* ================= SELECCIÓN DE USUARIO ================= */
+.role-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(18,59,89,.34);
+  backdrop-filter: blur(4px);
+}
+
+.role-overlay.show {
+  display: flex;
+}
+
+.role-modal {
+  width: min(100%, 420px);
+  background: #fff;
+  border-radius: 22px;
+  padding: 25px;
+  box-shadow: 0 25px 70px rgba(18,59,89,.25);
+  position: relative;
+  text-align: center;
+}
+
+.role-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 31px;
+  height: 31px;
+  border: 0;
+  border-radius: 50%;
+  background: #f1f6f8;
+  color: #61757f;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.role-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 8px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: #eaf8fb;
+  font-size: 25px;
+}
+
+.role-eyebrow {
+  display: block;
+  color: #159db1;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.role-modal h2 {
+  color: #123b59;
+  font-size: 21px;
+  margin: 5px 0;
+}
+
+.role-modal > p {
+  color: #71818b;
+  font-size: 11px;
+  margin-bottom: 17px;
+}
+
+.role-options {
+  display: grid;
+  gap: 10px;
+}
+
+.role-option {
+  width: 94%;
+  margin: 0 auto;
+  border: 1px solid #d5e2e6;
+  border-radius: 11px;
+  background: #fff;
+  padding: 10px 11px;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 43px 1fr;
+  column-gap: 11px;
+  align-items: center;
+  transition: .15s ease;
+}
+
+.role-option > span {
+  grid-row: 1 / span 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: #eef9fc;
+  font-size: 20px;
+}
+
+.role-option strong {
+  color: #294653;
+  font-size: 10px;
+}
+
+.role-option small {
+  color: #7a8a92;
+  font-size: 8px;
+  line-height: 1.3;
+  margin-top: 3px;
+}
+
+.role-option:hover {
+  border-color: #18a9bd;
+  background: #f6fcfd;
+  transform: translateY(-1px);
+}
+
+.role-option.patient > span {
+  background: #e8f7fa;
+}
+
+.role-option.caregiver > span {
+  background: #f0edff;
+}
+
+@media (max-width: 480px) {
+  .role-modal {
+    padding: 21px 16px;
+    border-radius: 19px;
+  }
+}
+
+
+/* Selector de cuenta antes del registro */
+#registerRoleModal .role-modal {
+  width: min(92vw, 400px);
+}
+
+#registerRoleModal .role-options {
+  gap: 8px;
+}
+
+#registerRoleModal .role-option {
+  width: 92%;
+  padding: 9px 10px;
+}
+
+#registerRoleModal .role-option > span {
+  width: 34px;
+  height: 34px;
+  font-size: 17px;
+}
+
+
+/* ================= MODAL DE INGRESO — PACIENTE / APODERADO ================= */
+#loginRoleModal {
+  background: linear-gradient(145deg, rgba(8, 43, 70, .96), rgba(8, 117, 142, .94));
+  backdrop-filter: blur(3px);
+  padding: 16px;
+}
+
+#loginRoleModal .role-modal {
+  width: min(94vw, 410px);
+  background: transparent;
+  color: #fff;
+  padding: 18px 8px 12px;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+#loginRoleModal .role-close {
+  right: 0;
+  top: 0;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+#loginRoleModal .role-icon {
+  display: none;
+}
+
+#loginRoleModal .role-eyebrow {
+  display: inline-block;
+  background: rgba(24,169,189,.18);
+  color: #6ee3ef;
+  border-radius: 15px;
+  padding: 6px 11px;
+  font-size: 8px;
+  letter-spacing: .9px;
+  margin-bottom: 11px;
+}
+
+#loginRoleModal .role-modal h2 {
+  color: #fff;
+  font-size: 25px;
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+#loginRoleModal .role-modal > p {
+  color: rgba(255,255,255,.82);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+#loginRoleModal .role-options {
+  gap: 11px;
+}
+
+#loginRoleModal .role-option {
+  width: 100%;
+  min-height: 78px;
+  margin: 0;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 15px;
+  background: #fff;
+  grid-template-columns: 47px 1fr 18px;
+  column-gap: 11px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.12);
+}
+
+#loginRoleModal .role-option > span {
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  font-size: 20px;
+  grid-row: 1 / span 2;
+}
+
+#loginRoleModal .role-option::after {
+  content: "›";
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: #18a9bd;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+#loginRoleModal .role-option strong {
+  color: #123b59;
+  font-size: 12px;
+  align-self: end;
+}
+
+#loginRoleModal .role-option small {
+  color: #71818b;
+  font-size: 9px;
+  align-self: start;
+}
+
+#loginRoleModal .role-option:hover {
+  transform: translateY(-2px);
+  border-color: transparent;
+  background: #fff;
+}
+
+#loginRoleModal .role-option.patient > span {
+  background: #e8f7fa;
+}
+
+#loginRoleModal .role-option.caregiver > span {
+  background: #f0edff;
+}
+
+@media (max-width: 480px) {
+  #loginRoleModal .role-modal h2 {
+    font-size: 22px;
+  }
+
+  #loginRoleModal .role-option {
+    min-height: 72px;
+    padding: 10px 11px;
+  }
+}
+
+
+/* ==========================================================
+   PANTALLA PRINCIPAL DE MEDICONTROL
+   Estructura inspirada en la portada de Mecamix
+   ========================================================== */
+body {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(24,169,189,.25) 0 15%, transparent 15.5%),
+    radial-gradient(circle at 0% 100%, rgba(91,53,90,.24) 0 13%, transparent 13.5%),
+    #071d36;
+  color: #fff;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.app {
+  min-height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 12px;
+}
+
+.landing-card {
+  width: min(100%, 420px);
+  text-align: center;
+  padding: 8px 0 20px;
+}
+
+.landing-brand {
+  margin-bottom: 22px;
+}
+
+.landing-logo {
+  width: 95px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 4px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.12));
+}
+
+.landing-brand p {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.landing-card h1 {
+  color: #fff;
+  text-align: left;
+  font-size: 27px;
+  line-height: 1.05;
+  margin: 0 6px 10px;
+}
+
+.landing-card h1 span {
+  color: #18a9bd;
+}
+
+.landing-description {
+  color: rgba(255,255,255,.88);
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: left;
+  margin: 0 6px 18px;
+  max-width: 350px;
+}
+
+.landing-image {
+  width: 100%;
+  height: 205px;
+  border-radius: 17px;
+  overflow: hidden;
+  background: #eaf8fb;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+
+.landing-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.landing-btn {
+  width: 100%;
+  height: 49px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  display: block;
+}
+
+.landing-btn.primary {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(90deg, #08758e, #18a9bd);
+  box-shadow: 0 7px 18px rgba(24,169,189,.20);
+}
+
+.landing-btn.primary b {
+  font-size: 20px;
+  margin-left: 8px;
+}
+
+.landing-btn.secondary {
+  margin-top: 8px;
+  border: 0;
+  color: #123b59;
+  background: #fff;
+}
+
+.help-btn {
+  margin-top: 15px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.login-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(4, 24, 43, .72);
+  backdrop-filter: blur(5px);
+}
+
+.login-form-overlay.show {
+  display: flex;
+}
+
+.login-form-card {
+  width: min(100%, 390px);
+  background: #fff;
+  border-radius: 22px;
+  padding: 22px;
+  position: relative;
+  box-shadow: 0 25px 70px rgba(0,0,0,.30);
+}
+
+.form-close {
+  position: absolute;
+  right: 13px;
+  top: 12px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: #eef5f7;
+  color: #61757f;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.form-brand {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.form-brand img {
+  width: 64px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.form-brand h2 {
+  color: #123b59;
+  font-size: 21px;
+  margin-top: 3px;
+}
+
+.form-brand p {
+  color: #71818b;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.login-form-card .input {
+  height: 48px;
+  margin-top: 9px;
+  border-radius: 13px;
+}
+
+.login-form-card .input input {
+  font-size: 13px;
+}
+
+.login-form-card .login-btn {
+  height: 49px;
+  font-size: 14px;
+  margin-top: 11px;
+}
+
+.login-form-card .forgot {
+  font-size: 11px;
+  margin: 10px auto 3px;
+}
+
+.login-form-card #message {
+  min-height: 17px;
+  font-size: 10px;
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 18px 12px;
+  }
+
+  .landing-card {
+    width: min(100%, 350px);
+  }
+
+  .landing-logo {
+    width: 88px;
+    height: 67px;
+  }
+
+  .landing-card h1 {
+    font-size: 25px;
+  }
+
+  .landing-image {
+    height: 190px;
+  }
+}
+
+
+/* ==========================================================
+   PALETA PASTEL — PORTADA PRINCIPAL
+   ========================================================== */
+body {
+  background:
+    radial-gradient(circle at 7% 18%, rgba(181, 232, 239, .95) 0 10%, transparent 10.5%),
+    radial-gradient(circle at 96% 82%, rgba(143, 218, 228, .90) 0 13%, transparent 13.5%),
+    radial-gradient(circle at 83% 8%, rgba(222, 246, 247, .90) 0 16%, transparent 16.5%),
+    linear-gradient(135deg, #eefcfc 0%, #dff7f8 48%, #cceff3 100%);
+}
+
+.landing-card {
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 24px 22px 20px;
+  box-shadow: 0 18px 50px rgba(71, 156, 169, .16);
+}
+
+.landing-brand p {
+  color: #123b59;
+}
+
+.landing-card h1 {
+  color: #123b59;
+}
+
+.landing-card h1 span {
+  color: #159db1;
+}
+
+.landing-description {
+  color: #5f7883;
+}
+
+.landing-image {
+  background: #edfafa;
+  box-shadow: 0 8px 24px rgba(71, 156, 169, .10);
+}
+
+.landing-btn.primary {
+  background: linear-gradient(90deg, #138da3, #22b5c2);
+  box-shadow: 0 8px 18px rgba(34,181,194,.16);
+}
+
+.landing-btn.secondary {
+  color: #08758e;
+  background: #ffffff;
+  border: 1px solid #b7dbe1;
+}
+
+.help-btn {
+  color: #08758e;
+}
+
+/* La ventana de login también conserva los tonos suaves. */
+.login-form-overlay {
+  background: rgba(128, 190, 199, .30);
+  backdrop-filter: blur(5px);
+}
+
+.login-form-card {
+  box-shadow: 0 22px 60px rgba(71, 156, 169, .20);
+}
+
+/* Selector Paciente / Apoderado en la misma paleta pastel. */
+#loginRoleModal {
+  background:
+    linear-gradient(135deg, rgba(226,248,249,.97), rgba(190,234,239,.97));
+}
+
+#loginRoleModal .role-modal h2 {
+  color: #123b59;
+}
+
+#loginRoleModal .role-modal > p {
+  color: #5f7883;
+}
+
+#loginRoleModal .role-eyebrow {
+  background: #d9f3f5;
+  color: #08758e;
+}
+
+#loginRoleModal .role-close {
+  background: #ffffff;
+  color: #61757f;
+}
+
+@media (max-width: 480px) {
+  .landing-card {
+    border-radius: 24px;
+  }
+}
+
+/* ==========================================================
+   REGISTRO — MISMA ESTRUCTURA VISUAL QUE INGRESO
+   ========================================================== */
+#registerChoiceModal {
+  background: linear-gradient(145deg, rgba(226,248,249,.98), rgba(190,234,239,.98));
+  backdrop-filter: blur(4px);
+  padding: 16px;
+}
+
+#registerChoiceModal .role-modal {
+  width: min(94vw, 410px);
+  background: transparent;
+  color: #123b59;
+  padding: 18px 8px 12px;
+  box-shadow: none;
+  border-radius: 0;
+  text-align: left;
+}
+
+#registerChoiceModal .role-close {
+  right: 0;
+  top: 0;
+  background: #fff;
+  color: #61757f;
+}
+
+#registerChoiceModal .role-icon {
+  display: none;
+}
+
+#registerChoiceModal .role-eyebrow {
+  display: inline-block;
+  background: #d9f3f5;
+  color: #08758e;
+  border-radius: 15px;
+  padding: 6px 11px;
+  font-size: 8px;
+  letter-spacing: .9px;
+  margin-bottom: 11px;
+}
+
+#registerChoiceModal .role-modal h2 {
+  color: #123b59;
+  font-size: 25px;
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+#registerChoiceModal .role-modal > p {
+  color: #5f7883;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+#registerChoiceModal .role-options {
+  gap: 11px;
+}
+
+#registerChoiceModal .role-option {
+  width: 100%;
+  min-height: 78px;
+  margin: 0;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 15px;
+  background: #fff;
+  grid-template-columns: 47px 1fr 18px;
+  column-gap: 11px;
+  box-shadow: 0 8px 22px rgba(71,156,169,.14);
+}
+
+#registerChoiceModal .role-option > span {
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  font-size: 20px;
+  grid-row: 1 / span 2;
+}
+
+#registerChoiceModal .role-option::after {
+  content: "›";
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: #18a9bd;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+#registerChoiceModal .role-option strong {
+  color: #123b59;
+  font-size: 12px;
+  align-self: end;
+}
+
+#registerChoiceModal .role-option small {
+  color: #71818b;
+  font-size: 9px;
+  align-self: start;
+}
+
+#registerChoiceModal .role-option:hover {
+  transform: translateY(-2px);
+  border-color: transparent;
+  background: #fff;
+}
+
+#registerChoiceModal .role-option.patient > span {
+  background: #e8f7fa;
+}
+
+#registerChoiceModal .role-option.caregiver > span {
+  background: #f0edff;
+}
+
+@media (max-width: 480px) {
+  #registerChoiceModal .role-modal h2 {
+    font-size: 22px;
+  }
+
+  #registerChoiceModal .role-option {
+    min-height: 72px;
+    padding: 10px 11px;
+  }
+}
+
+/* ===== PACIENTE ENCONTRADO - LOGIN APODERADO ===== */
+.patient-found-card {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin: -2px 0 10px;
+  padding: 11px 13px;
+  border: 1px solid #bfe7df;
+  border-radius: 16px;
+  background: #f2fbf8;
+  box-shadow: 0 7px 18px rgba(20, 145, 139, .08);
+  animation: patientFoundIn .2s ease;
+}
+.patient-found-card.show { display: flex; }
+.patient-found-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #d9f4e9;
+  color: #16866d;
+  font-weight: 900;
+  font-size: 17px;
+}
+.patient-found-card strong {
+  display: block;
+  color: #137a68;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.patient-found-card span {
+  display: block;
+  color: #173d58;
+  font-size: 14px;
+  font-weight: 800;
+}
+.patient-found-card small {
+  display: block;
+  color: #71848e;
+  font-size: 11px;
+  margin-top: 2px;
+}
+@keyframes patientFoundIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

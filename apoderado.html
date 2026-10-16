@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediControl | Panel del apoderado</title>
+  <link rel="stylesheet" href="principal.css">
+  <style>
+    :root{--mc-blue:#08758e;--mc-teal:#18a9bd;--mc-soft:#eef9fb;--mc-text:#173448;--mc-muted:#71818b;--mc-border:#dfe8eb;--mc-green:#299661;--mc-orange:#d58a17;--mc-red:#d85b5b}
+    body{background:#f7fafb}
+    .content{padding-top:24px}
+    .caregiver-patient-bar{width:min(100%,1060px);margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;background:#fff;border:1px solid var(--mc-border);border-radius:15px;box-shadow:0 3px 12px rgba(24,50,68,.04)}
+    .caregiver-patient-info{display:flex;align-items:center;gap:11px}.caregiver-patient-avatar{width:42px;height:42px;border-radius:50%;background:#e9f8fb;display:grid;place-items:center;font-size:21px}.caregiver-patient-info strong{display:block;font-size:12px;color:var(--mc-text)}.caregiver-patient-info small{display:block;margin-top:3px;font-size:9px;color:#7b8a93}.caregiver-linked{padding:7px 11px;border-radius:999px;background:#e6f8ee;color:#258451;font-size:9px;font-weight:800;white-space:nowrap}
+    .caregiver-section{display:none;width:min(100%,1060px);margin:0 auto}.caregiver-section.active-section{display:block}
+    .page-intro{margin-bottom:14px}
+    .section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:15px}.summary-card{background:#fff;border:1px solid var(--mc-border);border-radius:15px;padding:16px;min-height:105px;box-shadow:0 3px 12px rgba(24,50,68,.035)}.summary-card .summary-icon{width:38px;height:38px;border-radius:11px;background:var(--mc-soft);display:grid;place-items:center;font-size:19px}.summary-card strong{display:block;color:var(--mc-text);font-size:13px;margin-top:9px}.summary-card small{display:block;color:var(--mc-muted);font-size:9px;margin-top:4px;line-height:1.4}
+    .status-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}.status-box{background:#fff;border:1px solid var(--mc-border);border-radius:14px;padding:13px 14px}.status-box .big{display:block;font-size:23px;font-weight:800;margin-top:5px}.status-box small{color:var(--mc-muted);font-size:9px}.status-box.green .big{color:var(--mc-green)}.status-box.orange .big{color:var(--mc-orange)}.status-box.red .big{color:var(--mc-red)}
+    .caregiver-list{display:grid;gap:10px}.caregiver-row{background:#fff;border:1px solid var(--mc-border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 2px 8px rgba(24,50,68,.025)}.caregiver-row-main{display:flex;align-items:center;gap:12px;min-width:0}.row-icon{width:42px;height:42px;border-radius:12px;background:#edf9fb;display:grid;place-items:center;font-size:20px;flex:0 0 42px}.caregiver-row strong{color:var(--mc-text);font-size:12px}.caregiver-row small{display:block;color:var(--mc-muted);font-size:9px;margin-top:4px}.caregiver-status{padding:6px 10px;border-radius:999px;font-size:8px;font-weight:800;white-space:nowrap}.taken{background:#e5f8ee;color:#258451}.pending{background:#fff3dc;color:#c47b12}.omitted{background:#ffe8e8;color:#c75252}.active-pill{background:#e5f8ee;color:#258451}
+    .quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.quick-card{border:1px solid var(--mc-border);background:#fff;border-radius:14px;padding:15px;text-align:left;cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(24,50,68,.025)}.quick-card:hover{transform:translateY(-2px);border-color:#9bd9e2}.quick-card span{font-size:20px}.quick-card strong{display:block;margin-top:8px;font-size:12px;color:var(--mc-text)}.quick-card small{display:block;margin-top:4px;color:var(--mc-muted);font-size:9px}
+    .alarm-next-card{display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(135deg,#0d8faf,#20b3c2);color:#fff;border-radius:18px;padding:22px 24px;margin-bottom:18px;box-shadow:0 12px 28px rgba(13,143,175,.16)}.alarm-next-card .label{font-size:9px;font-weight:800;letter-spacing:.08em;opacity:.9}.alarm-next-card h3{font-size:24px;margin:5px 0 2px}.alarm-next-card p{font-size:10px;opacity:.92}.alarm-next-time{text-align:right}.alarm-next-time strong{display:block;font-size:25px}.alarm-next-time small{display:block;margin-top:3px;font-size:9px;opacity:.9}.alarm-heading{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:0 2px 11px}.alarm-heading h3{font-size:17px;color:var(--mc-text)}.alarm-heading p{margin-top:4px;font-size:10px;color:var(--mc-muted)}.alarm-count{padding:7px 10px;background:#e6f8fa;color:#0b8497;border-radius:999px;font-size:9px;font-weight:800;white-space:nowrap}.alarm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.alarm-card{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--mc-border);border-radius:15px;padding:15px;box-shadow:0 2px 8px rgba(24,50,68,.025)}.alarm-icon{width:48px;height:48px;flex:0 0 48px;border-radius:13px;background:#e9f7fb;display:grid;place-items:center;font-size:22px}.alarm-info{min-width:0}.alarm-info h4{margin:0;color:var(--mc-text);font-size:14px}.alarm-info small{display:block;color:var(--mc-muted);font-size:9px;margin-top:2px}.alarm-time{display:block;width:max-content;margin-top:7px;padding:5px 7px;border-radius:7px;background:#eef8fc;color:#087fa4;font-size:9px;font-weight:700}.alarm-active{display:block;margin-top:6px;color:#299661;font-size:9px;font-weight:700}.alarm-status{display:block;margin-top:3px;font-size:9px;font-weight:800}.status-taken{color:#299661}.status-pending{color:#d58a17}
+    .alert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.alert-card{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--mc-border);border-radius:15px;padding:16px}.alert-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:0 0 42px}.alert-card.warning .alert-icon{background:#fff3dc}.alert-card.danger .alert-icon{background:#ffe8e8}.alert-card.ok .alert-icon{background:#e5f8ee}.alert-card h4{font-size:13px;color:var(--mc-text)}.alert-card p{font-size:10px;color:var(--mc-muted);margin-top:4px;line-height:1.45}.alert-card strong{color:var(--mc-text)}
+    .progress-card{background:#fff;border:1px solid var(--mc-border);border-radius:16px;padding:18px;margin-bottom:14px}.progress-head{display:flex;justify-content:space-between;gap:10px;align-items:end}.progress-head h3{font-size:16px;color:var(--mc-text)}.progress-head strong{font-size:22px;color:var(--mc-green)}.progress-head p{font-size:10px;color:var(--mc-muted);margin-top:3px}.progress-track{height:11px;border-radius:99px;background:#edf2f3;overflow:hidden;margin-top:14px}.progress-fill{height:100%;width:67%;background:linear-gradient(90deg,#19a8bb,#48c79a);border-radius:99px}.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:16px}.week-day{text-align:center;padding:10px 5px;border:1px solid #e5edef;border-radius:10px;background:#fbfdfe}.week-day strong{display:block;font-size:9px;color:var(--mc-muted)}.week-day b{display:block;margin-top:5px;font-size:11px;color:var(--mc-text)}.week-dot{width:8px;height:8px;border-radius:50%;background:#39aa7a;margin:6px auto 0}.week-dot.partial{background:#e8a83d}.week-dot.low{background:#d85b5b}
+    .profile-layout{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1.3fr);gap:15px}.profile-card,.profile-settings-card{background:#fff;border:1px solid var(--mc-border);border-radius:16px;padding:20px;box-shadow:0 2px 9px rgba(24,50,68,.025)}.profile-card{text-align:center}.profile-avatar{width:76px;height:76px;margin:0 auto 11px;border-radius:50%;display:grid;place-items:center;background:#e7f7fa;color:#08758e;font-size:29px;font-weight:800}.profile-card h3{font-size:19px;color:var(--mc-text)}.profile-role{margin-top:4px;color:var(--mc-muted);font-size:10px;font-weight:700}.profile-data{display:grid;gap:8px;margin-top:17px;text-align:left}.profile-data-row{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #edf1f2;border-radius:11px}.profile-data-icon{width:30px;height:30px;border-radius:8px;background:#f0fafb;display:grid;place-items:center;font-size:15px}.profile-data-row small{display:block;color:var(--mc-muted);font-size:8px}.profile-data-row strong{display:block;margin-top:2px;color:var(--mc-text);font-size:10px}.account-active{color:var(--mc-green)!important}.profile-settings-title{display:flex;justify-content:space-between;align-items:start;gap:12px}.profile-settings-title h3{font-size:17px;color:var(--mc-text)}.profile-settings-title p{margin-top:4px;color:var(--mc-muted);font-size:10px}.secure-badge{background:#e5f8ee;color:#258451;padding:6px 9px;border-radius:999px;font-size:8px;font-weight:800;white-space:nowrap}.profile-info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.profile-info-box{display:flex;align-items:center;gap:9px;padding:12px;border:1px solid #edf1f2;border-radius:11px}.profile-info-box>span{font-size:16px}.profile-info-box small{display:block;color:var(--mc-muted);font-size:8px}.profile-info-box strong{display:block;color:var(--mc-text);font-size:10px;margin-top:2px}.profile-tip{display:flex;gap:10px;margin-top:14px;padding:12px;border-radius:12px;background:#eef9fb}.profile-tip>span{font-size:18px}.profile-tip strong{font-size:10px;color:var(--mc-text)}.profile-tip p{font-size:9px;color:var(--mc-muted);line-height:1.5;margin-top:3px}
+    .empty-note{margin-top:12px;padding:12px 14px;background:#f6fbfc;border:1px dashed #cde2e6;border-radius:12px;color:#71818b;font-size:9px}
+    .menu-overlay{display:none}
+    @media(max-width:900px){.section-grid,.quick-actions{grid-template-columns:repeat(2,1fr)}.profile-layout{grid-template-columns:1fr}}
+    @media(max-width:700px){.content{padding:20px 14px 40px}.caregiver-patient-bar{align-items:flex-start;flex-direction:column}.caregiver-linked{align-self:flex-start}.status-strip{grid-template-columns:1fr}.alarm-grid,.alert-grid{grid-template-columns:1fr}.week-grid{gap:4px}.week-day{padding:8px 2px}.week-day strong{font-size:8px}.profile-info-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.section-grid,.quick-actions{grid-template-columns:1fr}.alarm-next-card{align-items:flex-start;flex-direction:column}.alarm-next-time{text-align:left}.alarm-heading{align-items:flex-start;flex-direction:column}.caregiver-row{align-items:flex-start}.caregiver-status{margin-left:auto}}
+    body.menu-closed .content{width:100%;margin-left:0}.menu-toggle{transition:.25s ease}
+    @media(min-width:801px){body.menu-closed .sidebar{width:68px;min-width:68px}body.menu-closed .brand{justify-content:center;padding:10px 8px}body.menu-closed .brand img{width:42px;height:42px}body.menu-closed .brand div,body.menu-closed .nav-item b{display:none}body.menu-closed .nav-item{justify-content:center;padding:0}body.menu-closed .nav-item span{font-size:18px}body.menu-closed .menu-toggle{left:64px}body.menu-closed .content{width:calc(100% - 68px);margin-left:68px}}
+    @media(max-width:800px){.sidebar{transform:translateX(-100%);transition:.25s ease}.content{width:100%;margin-left:0}.menu-toggle{left:16px;top:15px}.topbar{padding-left:46px}body.menu-open .sidebar{transform:translateX(0)}body.menu-open::after{content:"";position:fixed;inset:0;background:rgba(16,48,65,.22);z-index:15}}
+  
+    /* Ajustes exclusivos del panel de apoderado */
+    .caregiver-section{max-width:980px;text-align:center}
+    .page-intro{display:flex;justify-content:center;text-align:center;margin:0 auto 22px;max-width:760px}
+    .page-intro>div{width:100%}
+    .page-intro .eyebrow{color:#617783;letter-spacing:.12em}
+    .page-intro h2{color:#173448;font-size:clamp(23px,3vw,30px);margin:8px 0}
+    .page-intro p{color:#687d88;line-height:1.6}
+    .caregiver-patient-bar{justify-content:center;text-align:center;min-height:70px}
+    .caregiver-patient-info{justify-content:center}
+    .caregiver-patient-avatar,.summary-icon,.row-icon,.alarm-icon,.alert-icon,.profile-data-icon,.profile-info-box>span{background:#f0f4f5!important;color:#536b77!important;filter:grayscale(1)}
+    .caregiver-linked,.caregiver-status,.secure-badge,.alarm-count{background:#eef2f3!important;color:#526873!important;border:1px solid #e0e7e9}
+    .section-grid,.status-strip,.caregiver-list,.alarm-grid,.alert-grid,.quick-actions,.profile-layout,.profile-info-grid{max-width:900px;margin-left:auto;margin-right:auto;text-align:left}
+    .caregiver-row,.summary-card,.status-box,.quick-card,.alarm-card,.alert-card,.progress-card,.profile-card,.profile-settings-card{box-shadow:none;border-color:#dfe6e8}
+    .quick-card{text-align:left}
+    .empty-state{max-width:680px;margin:18px auto;padding:32px 22px;border:1px solid #e0e7e9;border-radius:14px;background:#fff;text-align:center}
+    .empty-state-mark{width:44px;height:44px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#f0f4f5;color:#536b77;font-size:20px;font-weight:600}
+    .empty-state h3{margin:0 0 7px;color:#243f4d;font-size:16px}
+    .empty-state p{margin:0;color:#71818b;font-size:12px;line-height:1.65}
+    .empty-note{max-width:680px;margin:14px auto;text-align:center;background:#f7f9fa;border:1px solid #e3e9eb;color:#657983}
+    .status-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .status-box .big{color:#526873!important}
+    .progress-fill{background:#8ba7b0!important;width:0!important}
+    .week-dot,.week-dot.partial,.week-dot.low{background:#d9e1e4!important}
+    .profile-card{text-align:center}
+    @media(max-width:650px){.caregiver-section{padding-left:2px;padding-right:2px}.status-strip{grid-template-columns:1fr}.caregiver-patient-bar{padding:12px}.caregiver-row{align-items:flex-start}.caregiver-row-main{align-items:flex-start}}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir o cerrar menú" aria-expanded="false">☰</button>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="assets/logo.png" alt="MediControl"><div><strong>MediControl</strong><small>Tu salud, en buenas manos</small></div></div>
+    <nav class="nav" aria-label="Navegación del apoderado">
+      <button class="nav-item active" data-section="inicio"><b>Inicio</b></button>
+      <button class="nav-item" data-section="medicamentos"><b>Medicamentos del familiar</b></button>
+      <button class="nav-item" data-section="calendario"><b>Calendario</b></button>
+      <button class="nav-item" data-section="recordatorios"><b>Recordatorios</b></button>
+      <button class="nav-item" data-section="historial"><b>Historial</b></button>
+      <button class="nav-item" data-section="alertas"><b>Alertas</b></button>
+      <button class="nav-item" data-section="seguimiento"><b>Seguimiento</b></button>
+      <button class="nav-item" data-section="tratamientos"><b>Tratamientos</b></button>
+      <button class="nav-item" data-section="perfil"><b>Perfil del apoderado</b></button>
+    </nav>
+    <div class="sidebar-bottom"><button class="logout" id="logout"><span>⇥</span>Cerrar sesión</button></div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div><h1 id="pageTitle">Inicio</h1><p id="pageSubtitle">Resumen del seguimiento de tu familiar.</p></div>
+      <div class="profile-mini"><span id="profileInitial">A</span><strong id="profileName">Apoderado</strong></div>
+    </header>
+
+    <div class="caregiver-patient-bar">
+      <div class="caregiver-patient-info"><div class="caregiver-patient-avatar">—</div><div><strong id="patientNameTop">Sin familiar vinculado</strong><small id="patientLinkInfo">Cuando se vincule un paciente, sus datos aparecerán aquí.</small></div></div>
+      <span class="caregiver-linked" id="patientLinkStatus">Sin vincular</span>
+    </div>
+
+    <section class="caregiver-section active-section" id="inicio">
+      <div class="page-intro"><div><span class="eyebrow">MEDICONTROL · PANEL DEL APODERADO</span><h2>Bienvenido, <span id="homeName">Apoderado</span></h2><p>Desde aquí podrás acompañar el seguimiento de un familiar cuando vincules su cuenta.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">i</div><h3>Tu panel está listo</h3><p>Aún no hay un familiar vinculado ni información registrada. Cuando se complete la vinculación y el paciente registre sus datos, verás aquí su información.</p></div>
+      <div class="section-title"><h3>Accesos</h3><span>Las secciones estarán disponibles cuando existan registros.</span></div>
+      <div class="quick-actions">
+        <button class="quick-card" data-go="medicamentos"><strong>Medicamentos</strong><small>Consulta los medicamentos registrados.</small></button>
+        <button class="quick-card" data-go="recordatorios"><strong>Recordatorios</strong><small>Consulta los recordatorios configurados.</small></button>
+        <button class="quick-card" data-go="alertas"><strong>Alertas</strong><small>Revisa avisos asociados al paciente.</small></button>
+        <button class="quick-card" data-go="seguimiento"><strong>Seguimiento</strong><small>Consulta el progreso registrado.</small></button>
+        <button class="quick-card" data-go="calendario"><strong>Calendario</strong><small>Revisa las tomas por fecha.</small></button>
+        <button class="quick-card" data-go="historial"><strong>Historial</strong><small>Consulta los registros de tomas.</small></button>
+      </div>
+    </section>
+
+    <section class="caregiver-section" id="medicamentos">
+      <div class="page-intro"><div><span class="eyebrow">FAMILIAR SUPERVISADO</span><h2>Medicamentos</h2><p>Consulta los medicamentos registrados y sus horarios.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>No hay medicamentos registrados</h3><p>Cuando el paciente agregue medicamentos a su cuenta vinculada, aparecerán aquí con sus horarios y estado.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="calendario">
+      <div class="page-intro"><div><span class="eyebrow">ORGANIZACIÓN</span><h2>Calendario</h2><p>Revisa las tomas programadas y su estado.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>Calendario sin registros</h3><p>Las tomas aparecerán en el calendario cuando el paciente registre medicamentos y horarios.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="recordatorios">
+      <div class="page-intro"><div><span class="eyebrow">AVISOS</span><h2>Recordatorios</h2><p>Consulta las alarmas configuradas para el familiar.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>No hay recordatorios configurados</h3><p>Los recordatorios se mostrarán aquí cuando se creen desde la cuenta del paciente.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="historial">
+      <div class="page-intro"><div><span class="eyebrow">REGISTROS</span><h2>Historial de tomas</h2><p>Consulta el registro de tomas del familiar.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>El historial está vacío</h3><p>Cuando se confirmen o registren tomas, los datos se conservarán aquí.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="alertas">
+      <div class="page-intro"><div><span class="eyebrow">AVISOS IMPORTANTES</span><h2>Alertas</h2><p>Información que puede requerir atención del apoderado.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>No hay alertas</h3><p>Las alertas aparecerán cuando existan registros que requieran seguimiento. No se muestran avisos de demostración.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="seguimiento">
+      <div class="page-intro"><div><span class="eyebrow">RESUMEN</span><h2>Seguimiento</h2><p>Consulta el progreso del familiar a partir de los registros disponibles.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>Aún no hay datos de seguimiento</h3><p>El progreso se calculará cuando existan medicamentos, horarios y confirmaciones registradas.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="tratamientos">
+      <div class="page-intro"><div><span class="eyebrow">INFORMACIÓN DEL PACIENTE</span><h2>Tratamientos</h2><p>Consulta los tratamientos registrados para el familiar.</p></div></div>
+      <div class="empty-state"><div class="empty-state-mark">—</div><h3>No hay tratamientos registrados</h3><p>Cuando se registre un tratamiento en la cuenta del paciente, podrás consultarlo aquí. No se mostrarán tratamientos de ejemplo.</p></div>
+    </section>
+
+    <section class="caregiver-section" id="perfil">
+      <div class="page-intro"><div><span class="eyebrow">CUENTA</span><h2>Perfil del apoderado</h2><p>Consulta la información de la cuenta responsable del seguimiento.</p></div></div>
+      <div class="profile-layout">
+        <div class="profile-card"><div class="profile-avatar" id="apoderadoAvatar">A</div><h3 id="apoderadoNombre">Apoderado</h3><p class="profile-role">Cuenta de apoderado</p><div class="profile-data"><div class="profile-data-row"><div><small>Nombre completo</small><strong id="apoderadoFullName">Apoderado</strong></div></div><div class="profile-data-row"><div><small>Familiar supervisado</small><strong id="profilePatientName">Sin familiar vinculado</strong></div></div><div class="profile-data-row"><div><small>Vinculación</small><strong id="profileLinkStatus">Pendiente</strong></div></div></div></div>
+        <div class="profile-settings-card"><div class="profile-settings-title"><div><h3>Información de la cuenta</h3><p>Datos disponibles en esta sesión.</p></div></div><div class="profile-info-grid"><div class="profile-info-box"><div><small>Nombre</small><strong id="apoderadoInfoName">Apoderado</strong></div></div><div class="profile-info-box"><div><small>Familiar supervisado</small><strong id="profilePatientName2">Sin familiar vinculado</strong></div></div><div class="profile-info-box"><div><small>DNI del familiar</small><strong id="profilePatientDni">No disponible</strong></div></div><div class="profile-info-box"><div><small>Tipo de usuario</small><strong>Apoderado</strong></div></div></div><div class="profile-tip"><div><strong>Función del apoderado</strong><p>Consultar los medicamentos, horarios, recordatorios, historial y alertas del familiar vinculado.</p></div></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const navItems=document.querySelectorAll('.nav-item');
+  const sections=document.querySelectorAll('.caregiver-section');
+  const title=document.getElementById('pageTitle');
+  const subtitle=document.getElementById('pageSubtitle');
+  const menuToggle=document.getElementById('menuToggle');
+  const body=document.body;
+  const patientDni=localStorage.getItem('dniPacienteActivo')||localStorage.getItem('medicontrolDniPaciente')||'';
+  const apoderadoNombre=localStorage.getItem('apoderadoNombreActivo')||localStorage.getItem('apoderadoNombre')||'Apoderado';
+  const titles={
+    inicio:['Inicio','Resumen del seguimiento de tu familiar.'],
+    medicamentos:['Medicamentos del familiar','Consulta los medicamentos y horarios del paciente.'],
+    calendario:['Calendario','Revisa las tomas del familiar por fecha.'],
+    recordatorios:['Recordatorios','Consulta las alarmas programadas del familiar.'],
+    historial:['Historial','Revisa el registro de tomas del familiar.'],
+    alertas:['Alertas','Información que puede requerir atención.'],
+    seguimiento:['Seguimiento','Resumen del cumplimiento de las tomas.'],
+    perfil:['Perfil del apoderado','Información de la cuenta del apoderado.']
+  };
+  function showSection(id){
+    sections.forEach(s=>s.classList.toggle('active-section',s.id===id));
+    navItems.forEach(n=>n.classList.toggle('active',n.dataset.section===id));
+    if(titles[id]){title.textContent=titles[id][0];subtitle.textContent=titles[id][1]}
+    if(window.innerWidth<=800){body.classList.remove('menu-open');menuToggle.setAttribute('aria-expanded','false')}
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  navItems.forEach(n=>n.addEventListener('click',()=>showSection(n.dataset.section)));
+  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showSection(b.dataset.go)));
+  menuToggle.addEventListener('click',()=>{
+    if(window.innerWidth<=800){body.classList.toggle('menu-open');menuToggle.setAttribute('aria-expanded',body.classList.contains('menu-open'))}
+    else{body.classList.toggle('menu-closed');menuToggle.setAttribute('aria-expanded',!body.classList.contains('menu-closed'))}
+  });
+  document.addEventListener('click',e=>{if(window.innerWidth<=800 && body.classList.contains('menu-open') && e.target===body){body.classList.remove('menu-open');menuToggle.setAttribute('aria-expanded','false')}});
+  document.getElementById('logout').addEventListener('click',()=>{
+    ['apoderadoNombreActivo','dniPacienteActivo','apoderadoPacienteVinculado','medicontrolDniPaciente','apoderadoNombre','medicontrolApoderadoNombre'].forEach(k=>localStorage.removeItem(k));
+    window.location.href='index.html';
+  });
+  document.getElementById('profileName').textContent=apoderadoNombre;
+  document.getElementById('profileInitial').textContent=apoderadoNombre.trim().charAt(0).toUpperCase()||'S';
+  document.getElementById('homeName').textContent=apoderadoNombre;
+  document.getElementById('apoderadoNombre').textContent=apoderadoNombre;
+  document.getElementById('apoderadoFullName').textContent=apoderadoNombre;
+  document.getElementById('apoderadoInfoName').textContent=apoderadoNombre;
+  document.getElementById('apoderadoAvatar').textContent=apoderadoNombre.trim().charAt(0).toUpperCase()||'S';
+  const linkedName=localStorage.getItem('nombrePacienteActivo')||localStorage.getItem('pacienteNombre')||'';
+  const linked=Boolean(patientDni);
+  const patientNameTop=document.getElementById('patientNameTop');
+  if(patientNameTop) patientNameTop.textContent=linked?('Familiar supervisado: '+(linkedName||'Paciente vinculado')):'Sin familiar vinculado';
+  const patientLinkInfo=document.getElementById('patientLinkInfo');
+  if(patientLinkInfo) patientLinkInfo.textContent=linked?('DNI: '+patientDni):'Cuando se vincule un paciente, sus datos aparecerán aquí.';
+  const patientLinkStatus=document.getElementById('patientLinkStatus');
+  if(patientLinkStatus) patientLinkStatus.textContent=linked?'Vinculado':'Sin vincular';
+  const patientName1=document.getElementById('profilePatientName'); if(patientName1) patientName1.textContent=linked?(linkedName||'Paciente vinculado'):'Sin familiar vinculado';
+  const patientName2=document.getElementById('profilePatientName2'); if(patientName2) patientName2.textContent=linked?(linkedName||'Paciente vinculado'):'Sin familiar vinculado';
+  const patientDniProfile=document.getElementById('profilePatientDni'); if(patientDniProfile) patientDniProfile.textContent=patientDni||'No disponible';
+  const profileLinkStatus=document.getElementById('profileLinkStatus'); if(profileLinkStatus) profileLinkStatus.textContent=linked?'Vinculado':'Pendiente';
+})();
+</script>
+</body>
+</html>

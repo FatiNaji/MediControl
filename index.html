@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediControl | Iniciar sesión</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="app">
+    <section class="landing-card">
+
+      <div class="landing-brand">
+        <img src="assets/logo.png" class="landing-logo" alt="Logo MediControl">
+        <p>Tu salud, en buenas manos</p>
+      </div>
+
+      <h1>Tu salud,<br><span>siempre a tiempo</span></h1>
+
+      <p class="landing-description">
+        Lleva el control de tus medicamentos de manera rápida, sencilla y segura.
+      </p>
+
+      <div class="landing-image">
+        <img src="assets/Inicio.png" alt="Paciente y familiar">
+      </div>
+
+      <button class="landing-btn primary" type="button" id="openLogin">
+        Iniciar sesión <b>→</b>
+      </button>
+
+      <button class="landing-btn secondary" type="button" id="register">
+        Registrarme
+      </button>
+
+      <button class="help-btn" type="button" id="forgot">
+        ¿Necesitas ayuda?
+      </button>
+
+    </section>
+
+    <!-- FORMULARIO DE INICIO DE SESIÓN -->
+    <div class="login-form-overlay" id="loginFormOverlay">
+      <section class="login-form-card">
+        <button class="form-close" type="button" id="closeLogin">×</button>
+
+        <div class="form-brand">
+          <img src="assets/logo.png" alt="MediControl">
+          <h2>Iniciar sesión</h2>
+          <p>Ingresa tus datos para continuar.</p>
+        </div>
+
+        <form id="loginForm">
+          <label class="input">
+            <span>👤</span>
+            <input type="text" id="nombre" placeholder="Nombre o Apellido" autocomplete="name" required>
+          </label>
+
+          <label class="input" id="dniLoginBox">
+            <span>🪪</span>
+            <input type="password" id="password" placeholder="DNI del paciente" inputmode="numeric" maxlength="8" required>
+            <button type="button" id="showPassword" aria-label="Mostrar DNI">👁️</button>
+          </label>
+
+          <div class="patient-found-card" id="patientFoundCard" aria-live="polite">
+            <div class="patient-found-icon">✓</div>
+            <div>
+              <strong>Paciente encontrado</strong>
+              <span id="patientFoundName">—</span>
+              <small id="patientFoundDni">DNI: —</small>
+            </div>
+          </div>
+
+          <button class="login-btn" type="submit">
+            Iniciar sesión <b>→</b>
+          </button>
+
+          <button class="forgot" type="button" id="forgotForm">
+            ¿Olvidaste tu contraseña?
+          </button>
+
+          <p id="message"></p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+
+      <!-- Selección de tipo de usuario -->
+      <div class="role-overlay" id="loginRoleModal">
+        <div class="role-modal">
+          <button type="button" class="role-close" id="closeLoginRole">×</button>
+          <div class="role-icon">👤</div>
+          <span class="role-eyebrow">MEDICONTROL</span>
+          <h2>¿Cómo deseas ingresar?</h2>
+          <p>Selecciona el tipo de usuario para continuar.</p>
+
+          <div class="role-options">
+            <button type="button" class="role-option patient" data-role="paciente">
+              <span>👤</span>
+              <strong>Iniciar como paciente</strong>
+              <small>Ver mis medicamentos, calendario y recordatorios</small>
+            </button>
+
+            <button type="button" class="role-option caregiver" data-role="apoderado">
+              <span>👥</span>
+              <strong>Iniciar como apoderado</strong>
+              <small>Supervisar y acompañar el control de medicamentos</small>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="role-overlay" id="registerChoiceModal">
+        <div class="role-modal">
+          <button type="button" class="role-close" id="closeRegisterChoice">×</button>
+          <div class="role-icon">✨</div>
+          <span class="role-eyebrow">MEDICONTROL</span>
+          <h2>¿Qué tipo de cuenta vas a crear?</h2>
+          <p>Selecciona una opción para continuar con el registro.</p>
+
+          <div class="role-options">
+            <button type="button" class="role-option patient" data-role="paciente">
+              <span>👤</span>
+              <strong>Crear cuenta de paciente</strong>
+              <small>Para controlar tus medicamentos y tratamientos.</small>
+            </button>
+
+            <button type="button" class="role-option caregiver" data-role="apoderado">
+              <span>👥</span>
+              <strong>Crear cuenta de apoderado</strong>
+              <small>Para acompañar y supervisar a un paciente.</small>
+            </button>
+          </div>
+        </div>
+      </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

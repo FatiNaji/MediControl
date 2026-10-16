@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediControl | Crear cuenta</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .register-page {
+      width: min(100%, 440px);
+      background: white;
+      border-radius: 34px;
+      padding: 30px 24px;
+      box-shadow: 0 20px 60px rgba(8,117,142,.20);
+    }
+
+    .register-head {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .register-head img {
+      width: 105px;
+      height: 75px;
+      object-fit: contain;
+    }
+
+    .register-head h1 {
+      color: #123b59;
+      font-size: 28px;
+      margin-top: 3px;
+    }
+
+    .register-head h1 span {
+      color: #18a9bd;
+    }
+
+    .register-head p {
+      color: #70848e;
+      margin-top: 5px;
+    }
+
+    .create {
+      width: 100%;
+      height: 58px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 29px;
+      background: linear-gradient(90deg,#087d98,#23b4c4);
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .back {
+      display: block;
+      margin: 14px auto 0;
+      border: 0;
+      background: transparent;
+      color: #08758e;
+      text-decoration: underline;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    #registerMessage {
+      min-height: 20px;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section class="register-page">
+
+      <div class="register-head">
+        <img src="assets/logo.png" alt="Logo MediControl">
+        <h1>Crear cuenta en Medi<span>Control</span></h1>
+        <p>Registra tus datos para ingresar</p>
+      </div>
+
+      <form id="registerForm">
+
+        <label class="input">
+          <span>👤</span>
+          <input
+            type="text"
+            id="regNombre"
+            placeholder="Nombre completo"
+            autocomplete="name"
+            required>
+        </label>
+
+        <label class="input">
+          <span>🪪</span>
+          <input
+            type="password"
+            id="regDni"
+            placeholder="DNI (8 números)"
+            inputmode="numeric"
+            maxlength="8"
+            required>
+        </label>
+
+        <label class="input">
+          <span>🔒</span>
+          <input
+            type="password"
+            id="confirmDni"
+            placeholder="Confirmar DNI"
+            inputmode="numeric"
+            maxlength="8"
+            required>
+        </label>
+
+        <button class="create" type="submit" id="createAccountButton">
+          Crear cuenta ✓
+        </button>
+
+        <button class="back" type="button" id="backLogin">
+          ← Volver a iniciar sesión
+        </button>
+
+        <p id="registerMessage"></p>
+      </form>
+
+    </section>
+
+
+  </main>
+
+  <script>
+    const registerForm = document.getElementById("registerForm");
+    const message = document.getElementById("registerMessage");
+    const backLogin = document.getElementById("backLogin");
+
+    const selectedRole = localStorage.getItem("medicontrolRol") || "paciente";
+
+    registerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const nombre = document.getElementById("regNombre").value.trim();
+      const dni = document.getElementById("regDni").value.trim();
+      const confirmDni = document.getElementById("confirmDni").value.trim();
+
+      if (!nombre || !dni || !confirmDni) {
+        message.style.color = "#c94c4c";
+        message.textContent = "Completa todos los datos.";
+        return;
+      }
+
+      if (!/^\d+$/.test(dni)) {
+        message.style.color = "#c94c4c";
+        message.textContent = "El DNI solo debe contener números.";
+        return;
+      }
+
+      if (dni !== confirmDni) {
+        message.style.color = "#c94c4c";
+        message.textContent = "Los DNI no coinciden.";
+        return;
+      }
+
+      localStorage.setItem("medicontrolRol", selectedRole);
+
+      if (selectedRole === "paciente") {
+        localStorage.setItem("medicontrolUsuario", nombre);
+        localStorage.setItem("medicontrolDni", dni);
+        localStorage.setItem("medicontrolDniPaciente", dni);
+      } else {
+        localStorage.setItem("apoderadoNombre", nombre);
+        localStorage.setItem("medicontrolApoderadoNombre", nombre);
+        // El DNI del paciente se introduce al iniciar sesión, no durante el registro.
+      }
+
+      message.style.color = "#08758e";
+      message.textContent = selectedRole === "apoderado"
+        ? "✓ Cuenta de apoderado creada. Ahora inicia sesión."
+        : "✓ Cuenta de paciente creada. Ahora inicia sesión.";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
+    });
+
+    backLogin.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
